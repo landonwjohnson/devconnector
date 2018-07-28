@@ -10,7 +10,10 @@ import { Provider } from 'react-redux';
 import store from './store';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
-import { setCurrentUser } from './actions/authActions';
+import { setCurrentUser, logoutUser } from './actions/authActions';
+import { clearCurrentProfile } from './actions/profileActions';
+import Dashboard from './components/dashboard/Dashboard';
+
 
 
 //Check for token
@@ -21,11 +24,16 @@ if(localStorage.jwtToken){
   const decoded = jwt_decode(localStorage.jwtToken);
   // Set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
-  // Check for expirted token
+  // Check for expired token
   const currentTime = Date.now() / 3000;
 
-  if(decoded.exp){
-    
+  if(decoded.exp < currentTime){
+    store.dispatch(logoutUser());
+
+    //To Do: Clear current Profile
+    store.dispatch(clearCurrentProfile())
+    // Redirect to login
+    window.location.href = '/login'
   }
 }
 
@@ -42,6 +50,7 @@ class App extends Component {
                   <div className="container">
                       <Route path="/register" exact component={Register} />
                       <Route path="/login" exact component={Login} />
+                      <Route path="/dashboard" exact component={Dashboard} />
                   </div>
               <Footer />
             </div>
