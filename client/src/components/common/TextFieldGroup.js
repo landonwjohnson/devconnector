@@ -25,7 +25,9 @@ const TextFieldGroup = ({
             name={name} 
             onChange={onChange}
         />
-      {error && (<div style={{display: 'block', textAlign: 'left'}} className="invalid-feedback">{error}</div>)}
+            {info && <small className="form-text text-muted">{info}</small>}
+    {info && <div className="invalid-feedback">{error}</div>}
+      {/* {error && (<div style={{display: 'block', textAlign: 'left'}} className="invalid-feedback">{error}</div>)} */}
   </div>
   )
 }
